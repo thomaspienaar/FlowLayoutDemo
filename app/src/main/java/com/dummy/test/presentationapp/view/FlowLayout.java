@@ -18,12 +18,12 @@ public class FlowLayout extends ViewGroup {
 
     private final int INVALID_POSITION = -1;
 
-    private int positionClickDown = INVALID_POSITION;
+//    private int positionClickDown = INVALID_POSITION;
 
-    private OnItemClickListener onItemClickListener = null;
+//    private OnItemClickListener onItemClickListener = null;
 
     private Adapter mAdapter;
-    private FlowDataSetObserver dataSetObserver = new FlowDataSetObserver();
+//    private FlowDataSetObserver dataSetObserver = new FlowDataSetObserver();
 
     public FlowLayout(final Context context) {
         this(context, null);
@@ -31,16 +31,16 @@ public class FlowLayout extends ViewGroup {
 
     public FlowLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
-        this.setWillNotDraw(false);
+//        this.setWillNotDraw(false);
     }
 
     public void setAdapter(Adapter adapter) {
 
-        if (mAdapter != null)
-            mAdapter.unregisterDataSetObserver(dataSetObserver);
+//        if (mAdapter != null)
+//            mAdapter.unregisterDataSetObserver(dataSetObserver);
 
         mAdapter = adapter;
-        mAdapter.registerDataSetObserver(dataSetObserver);
+//        mAdapter.registerDataSetObserver(dataSetObserver);
 
         buildViews();
 
@@ -53,7 +53,6 @@ public class FlowLayout extends ViewGroup {
             addView(mAdapter.getView(i, null, this));
         }
         requestLayout();
-        invalidate();
     }
 
     @Override
@@ -125,63 +124,63 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_POINTER_DOWN:
-                if (onItemClickListener != null) {
-                    setSelectedChildPressed(false);
-                    positionClickDown = positionForCoordinates(event);
-                    setSelectedChildPressed(true);
-                }
-                return true;
-            case MotionEvent.ACTION_UP:
-                setSelectedChildPressed(false);
-                if (onItemClickListener != null && positionClickDown != INVALID_POSITION && positionForCoordinates(event) == positionClickDown) {
-                    View child = getChildAt(positionClickDown);
-                    if(child != null) {
-                        onItemClickListener.onItemClick(this, child, positionClickDown, mAdapter.getItemId(positionClickDown));
-                    }
-                }
-                positionClickDown = INVALID_POSITION;
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                if(positionClickDown != INVALID_POSITION) {
-                    if(positionForCoordinates(event) != positionClickDown) {
-                        setSelectedChildPressed(false);
-                        positionClickDown = INVALID_POSITION;
-                    }
-                }
-                return true;
-            case MotionEvent.ACTION_CANCEL: case MotionEvent.ACTION_POINTER_UP:
-                setSelectedChildPressed(false);
-                positionClickDown = INVALID_POSITION;
-                return true;
-        }
-        return super.onTouchEvent(event);
-    }
-
-    private void setSelectedChildPressed(final boolean isPressed) {
-        if(positionClickDown != INVALID_POSITION) {
-            View child = getChildAt(positionClickDown);
-            if(child != null) {
-                child.setPressed(isPressed);
-            }
-        }
-    }
-
-    private int positionForCoordinates(MotionEvent ev) {
-        for (int i = 0; i < this.getChildCount(); ++i) {
-            View childView = this.getChildAt(i);
-            int loc [] = new int[2];
-            childView.getLocationOnScreen(loc);
-            Rect rect = new Rect(loc[0], loc[1], loc[0] + childView.getWidth(),  loc[1] + childView.getHeight());
-            if (rect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
-                return i;
-            }
-        }
-        return INVALID_POSITION;
-    }
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN: case MotionEvent.ACTION_POINTER_DOWN:
+//                if (onItemClickListener != null) {
+//                    setSelectedChildPressed(false);
+//                    positionClickDown = positionForCoordinates(event);
+//                    setSelectedChildPressed(true);
+//                }
+//                return true;
+//            case MotionEvent.ACTION_UP:
+//                setSelectedChildPressed(false);
+//                if (onItemClickListener != null && positionClickDown != INVALID_POSITION && positionForCoordinates(event) == positionClickDown) {
+//                    View child = getChildAt(positionClickDown);
+//                    if(child != null) {
+//                        onItemClickListener.onItemClick(this, child, positionClickDown, mAdapter.getItemId(positionClickDown));
+//                    }
+//                }
+//                positionClickDown = INVALID_POSITION;
+//                return true;
+//            case MotionEvent.ACTION_MOVE:
+//                if(positionClickDown != INVALID_POSITION) {
+//                    if(positionForCoordinates(event) != positionClickDown) {
+//                        setSelectedChildPressed(false);
+//                        positionClickDown = INVALID_POSITION;
+//                    }
+//                }
+//                return true;
+//            case MotionEvent.ACTION_CANCEL: case MotionEvent.ACTION_POINTER_UP:
+//                setSelectedChildPressed(false);
+//                positionClickDown = INVALID_POSITION;
+//                return true;
+//        }
+//        return super.onTouchEvent(event);
+//    }
+//
+//    private void setSelectedChildPressed(final boolean isPressed) {
+//        if(positionClickDown != INVALID_POSITION) {
+//            View child = getChildAt(positionClickDown);
+//            if(child != null) {
+//                child.setPressed(isPressed);
+//            }
+//        }
+//    }
+//
+//    private int positionForCoordinates(MotionEvent ev) {
+//        for (int i = 0; i < this.getChildCount(); ++i) {
+//            View childView = this.getChildAt(i);
+//            int loc [] = new int[2];
+//            childView.getLocationOnScreen(loc);
+//            Rect rect = new Rect(loc[0], loc[1], loc[0] + childView.getWidth(),  loc[1] + childView.getHeight());
+//            if (rect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+//                return i;
+//            }
+//        }
+//        return INVALID_POSITION;
+//    }
 
 
     @Override
@@ -219,28 +218,28 @@ public class FlowLayout extends ViewGroup {
         }
     }
 
-    class FlowDataSetObserver extends DataSetObserver {
-
-        @Override
-        public void onChanged() {
-            buildViews();
-            super.onChanged();
-        }
-
-        @Override
-        public void onInvalidated() {
-            super.onInvalidated();
-        }
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
-
-    public View findChildForPosition(int position) {
-        if(position >= 0 && position < getChildCount())
-            return getChildAt(position);
-        else
-            return null;
-    }
+//    class FlowDataSetObserver extends DataSetObserver {
+//
+//        @Override
+//        public void onChanged() {
+//            buildViews();
+//            super.onChanged();
+//        }
+//
+//        @Override
+//        public void onInvalidated() {
+//            super.onInvalidated();
+//        }
+//    }
+//
+//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+//        this.onItemClickListener = onItemClickListener;
+//    }
+//
+//    public View findChildForPosition(int position) {
+//        if(position >= 0 && position < getChildCount())
+//            return getChildAt(position);
+//        else
+//            return null;
+//    }
 }
